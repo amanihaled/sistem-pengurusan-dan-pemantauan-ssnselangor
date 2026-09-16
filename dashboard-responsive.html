@@ -1,0 +1,2397 @@
+<!DOCTYPE html>
+<html lang="ms">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard Pengurusan Sekolah Selamat</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #0F2A47;
+      --navy-2: #173B60;
+      --gold: #E8A93A;
+      --gold-dark: #C98A1F;
+      --crimson: #B33A3A;
+      --green: #2F7D5D;
+      --cream: #F6F3EC;
+      --ink: #1C2733;
+      --ink-soft: #5A6472;
+      --line: #E2DCCC;
+      --white: #FFFFFF;
+      --radius-card: 10px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      background: var(--cream);
+      color: var(--ink);
+      font-family: 'Inter', sans-serif;
+    }
+
+    h1,
+    h2,
+    h3,
+    .display {
+      font-family: 'Oswald', sans-serif;
+    }
+
+    ::selection {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    /* ---------- Top bar ---------- */
+    .topbar {
+      background: var(--navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 24px;
+      border-bottom: 4px solid var(--gold);
+      flex-wrap: wrap;
+      row-gap: 8px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .crest {
+      width: 46px;
+      height: 46px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .crest img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .brand-text .school {
+      font-family: 'Oswald';
+      font-weight: 600;
+      font-size: 18px;
+      letter-spacing: .3px;
+    }
+
+    .brand-text .tagline {
+      font-size: 12px;
+      color: #C9D3DE;
+      margin-top: 2px;
+    }
+
+    .role-toggle {
+      display: flex;
+      background: rgba(255, 255, 255, .08);
+      border: 1px solid rgba(255, 255, 255, .2);
+      border-radius: 999px;
+      padding: 3px;
+      gap: 2px;
+    }
+
+    .role-toggle button {
+      border: none;
+      background: transparent;
+      color: #C9D3DE;
+      font-family: 'Inter';
+      font-weight: 600;
+      font-size: 13px;
+      padding: 8px 18px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: .2s;
+    }
+
+    .role-toggle button.active {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    /* ---------- Layout ---------- */
+    .app {
+      display: flex;
+      min-height: calc(100vh - 75px);
+    }
+
+    .sidebar {
+      width: 230px;
+      background: var(--navy-2);
+      color: var(--white);
+      flex-shrink: 0;
+      padding: 18px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .side-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      color: #9FB0C2;
+      margin: 14px 10px 6px;
+    }
+
+    .nav-btn {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      border: none;
+      color: #E4EAF1;
+      text-align: left;
+      padding: 11px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-family: 'Inter';
+      font-weight: 500;
+      font-size: 14.5px;
+      transition: .15s;
+    }
+
+    .nav-btn:hover {
+      background: rgba(255, 255, 255, .08);
+    }
+
+    .nav-btn.active {
+      background: var(--gold);
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .nav-ic {
+      width: 20px;
+      text-align: center;
+      flex-shrink: 0;
+    }
+
+    .side-banner {
+      margin-top: auto;
+      background: linear-gradient(160deg, var(--crimson), #7a2424);
+      border-radius: 10px;
+      padding: 16px;
+      font-family: 'Oswald';
+      font-size: 15px;
+      line-height: 1.35;
+    }
+
+    .side-banner small {
+      display: block;
+      font-family: 'Inter';
+      font-weight: 400;
+      font-size: 11px;
+      color: #F0D9D9;
+      margin-top: 8px;
+      letter-spacing: .4px;
+    }
+
+    .main {
+      flex: 1;
+      padding: 26px 30px;
+      overflow-x: hidden;
+    }
+
+    .page {
+      display: none;
+    }
+
+    .page.active {
+      display: block;
+    }
+
+    .page-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .page-head h1 {
+      font-size: 26px;
+      margin: 0;
+      color: var(--navy);
+    }
+
+    .page-head .sub {
+      color: var(--ink-soft);
+      font-size: 13.5px;
+      margin-top: 2px;
+    }
+
+    .badge-mode {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      padding: 5px 12px;
+      border-radius: 999px;
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    /* ---------- Stat cards ---------- */
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .stat-ic {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 19px;
+      flex-shrink: 0;
+      color: var(--white);
+    }
+
+    .stat-num {
+      font-family: 'Oswald';
+      font-size: 26px;
+      font-weight: 600;
+      line-height: 1;
+      color: var(--navy);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-top: 3px;
+    }
+
+    /* ---------- Generic panel ---------- */
+    .panel {
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .panel-head {
+      background: var(--navy);
+      color: var(--white);
+      padding: 11px 18px;
+      font-family: 'Oswald';
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: .3px;
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    .panel-head.gold {
+      background: var(--gold-dark);
+    }
+
+    .panel-body {
+      padding: 18px;
+      max-width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+
+    .panel-body table {
+      min-width: 520px;
+    }
+
+    .cols-2 {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 18px;
+      align-items: start;
+    }
+
+    /* ---------- Form ---------- */
+    .field {
+      margin-bottom: 13px;
+    }
+
+    .field label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 600;
+      color: var(--navy);
+      margin-bottom: 5px;
+    }
+
+    .field input,
+    .field select,
+    .field textarea {
+      width: 100%;
+      border: 1px solid var(--line);
+      border-radius: 7px;
+      padding: 9px 11px;
+      font-family: 'Inter';
+      font-size: 13.5px;
+      color: var(--ink);
+      background: #FCFBF8;
+    }
+
+    .field input:focus,
+    .field select:focus,
+    .field textarea:focus {
+      outline: 2px solid var(--gold);
+      outline-offset: 0;
+      border-color: var(--gold);
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      border-radius: 8px;
+      padding: 10px 18px;
+      font-family: 'Inter';
+      font-weight: 600;
+      font-size: 13.5px;
+      cursor: pointer;
+      transition: .15s;
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .btn-primary:hover {
+      background: var(--navy-2);
+    }
+
+    .btn-gold {
+      background: var(--gold);
+      color: var(--navy);
+    }
+
+    .btn-gold:hover {
+      background: var(--gold-dark);
+      color: var(--white);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      border: 1px solid var(--line);
+      color: var(--ink-soft);
+    }
+
+    /* ---------- Table ---------- */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th {
+      text-align: left;
+      background: #F0ECE1;
+      color: var(--navy);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .4px;
+      padding: 9px 10px;
+      border-bottom: 2px solid var(--line);
+    }
+
+    td {
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--line);
+      vertical-align: middle;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .pill {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--white);
+    }
+
+    .pill.selesai {
+      background: var(--green);
+    }
+
+    .pill.tindakan {
+      background: var(--gold-dark);
+    }
+
+    .pill.belum {
+      background: var(--crimson);
+    }
+
+    select.status-edit {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 5px 7px;
+      font-size: 12px;
+      font-family: 'Inter';
+    }
+
+    /* ---------- Checklist / cycle grid ---------- */
+    .cycle-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .cycle-card {
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      padding: 12px;
+      text-align: center;
+      background: #FCFBF8;
+    }
+
+    .cycle-card .yr {
+      font-family: 'Oswald';
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--navy);
+    }
+
+    .cycle-card .dots {
+      display: flex;
+      justify-content: center;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .dot {
+      width: 11px;
+      height: 11px;
+      border-radius: 50%;
+      background: var(--line);
+    }
+
+    .dot.on {
+      background: var(--green);
+    }
+
+    .dot.now {
+      outline: 2px solid var(--gold);
+      outline-offset: 1px;
+    }
+
+    .progress-ring-wrap {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .ring {
+      width: 76px;
+      height: 76px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: conic-gradient(var(--green) calc(var(--pct)*1%), #E7E2D3 0);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .ring::before {
+      content: '';
+      position: absolute;
+      inset: 8px;
+      background: var(--white);
+      border-radius: 50%;
+    }
+
+    .ring-num {
+      position: relative;
+      font-family: 'Oswald';
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--navy);
+    }
+
+    .links li {
+      margin-bottom: 7px;
+      font-size: 13.5px;
+    }
+
+    .links a {
+      color: var(--navy-2);
+      text-decoration: none;
+      font-weight: 600;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    .note {
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: #F0ECE1;
+      border-radius: 8px;
+      padding: 10px 12px;
+      margin-top: 10px;
+    }
+
+    .footer-strip {
+      background: var(--navy);
+      color: var(--gold);
+      text-align: center;
+      padding: 10px;
+      font-family: 'Oswald';
+      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+
+    .empty {
+      padding: 22px;
+      text-align: center;
+      color: var(--ink-soft);
+      font-size: 13px;
+    }
+
+    /* ---------- Login ---------- */
+    #login-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: radial-gradient(circle at 20% 15%, #1B4165 0%, var(--navy) 45%, #081525 100%);
+      padding: 24px;
+    }
+
+    .login-card {
+      background: var(--white);
+      border-radius: 14px;
+      width: 100%;
+      max-width: 860px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, .35);
+    }
+
+    .login-side {
+      background: linear-gradient(165deg, var(--navy), #0A1A2C);
+      color: var(--white);
+      padding: 36px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .login-side .crest {
+      width: 56px;
+      height: 56px;
+      margin-bottom: 16px;
+    }
+
+    .login-side .crest span {
+      font-size: 18px;
+    }
+
+    .login-side h2 {
+      font-size: 22px;
+      margin: 0 0 8px;
+      line-height: 1.25;
+    }
+
+    .login-side p {
+      font-size: 13px;
+      color: #B9C6D4;
+      line-height: 1.5;
+    }
+
+    .login-side .strip {
+      font-family: 'Oswald';
+      letter-spacing: 2.5px;
+      font-size: 11px;
+      color: var(--gold);
+      margin-top: 24px;
+    }
+
+    .login-main {
+      padding: 36px 34px;
+    }
+
+    .login-main h3 {
+      margin: 0 0 4px;
+      font-size: 20px;
+      color: var(--navy);
+    }
+
+    .login-main .sub {
+      color: var(--ink-soft);
+      font-size: 13px;
+      margin-bottom: 22px;
+    }
+
+    .role-pick {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 20px;
+      background: #F0ECE1;
+      padding: 4px;
+      border-radius: 9px;
+    }
+
+    .role-pick button {
+      flex: 1;
+      border: none;
+      background: transparent;
+      padding: 10px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-family: 'Inter';
+      font-weight: 600;
+      font-size: 13px;
+      color: var(--ink-soft);
+    }
+
+    .role-pick button.active {
+      background: var(--white);
+      color: var(--navy);
+      box-shadow: 0 1px 4px rgba(0, 0, 0, .12);
+    }
+
+    .login-err {
+      color: var(--crimson);
+      font-size: 12px;
+      margin-top: 8px;
+      display: none;
+    }
+
+    .login-err.show {
+      display: block;
+    }
+
+    .login-hint {
+      font-size: 11.5px;
+      color: var(--ink-soft);
+      margin-top: 10px;
+    }
+
+    #app-container {
+      display: none;
+    }
+
+    .logout-btn {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, .3);
+      color: #E4EAF1;
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12.5px;
+      font-family: 'Inter';
+      font-weight: 600;
+      cursor: pointer;
+      margin-left: 10px;
+    }
+
+    .logout-btn:hover {
+      background: rgba(255, 255, 255, .1);
+    }
+
+    .viewer-tag {
+      font-size: 11px;
+      color: #C9D3DE;
+      background: rgba(255, 255, 255, .08);
+      padding: 5px 11px;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    /* ===================== RESPONSIVE ===================== */
+
+    /* ---- Tablet & below (~900px): sidebar becomes a top scroll-bar, stack columns ---- */
+    @media(max-width:900px) {
+      .app {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        padding: 10px 10px;
+        gap: 6px;
+      }
+
+      .sidebar::-webkit-scrollbar {
+        height: 4px;
+      }
+
+      .side-label {
+        display: none;
+      }
+
+      .nav-btn {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+
+      .side-banner {
+        display: none;
+      }
+
+      .main {
+        padding: 20px 18px;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .cols-2 {
+        grid-template-columns: 1fr;
+      }
+
+      .cycle-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .field-row {
+        grid-template-columns: 1fr;
+      }
+
+      .login-card {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+      }
+
+      .login-side {
+        padding: 26px 24px;
+      }
+    }
+
+    /* ---- Small tablets / large phones (~700px) ---- */
+    @media(max-width:700px) {
+      .topbar {
+        padding: 12px 16px;
+      }
+
+      .brand-text .school {
+        font-size: 15px;
+      }
+
+      .brand-text .tagline {
+        font-size: 11px;
+      }
+
+      .page-head h1 {
+        font-size: 21px;
+      }
+
+      .panel-head {
+        font-size: 13.5px;
+        padding: 10px 14px;
+      }
+
+      .panel-body {
+        padding: 14px;
+      }
+    }
+
+    /* ---- Phones (~480px) ---- */
+    @media(max-width:480px) {
+      .crest {
+        width: 36px;
+        height: 36px;
+      }
+
+      .brand {
+        gap: 10px;
+      }
+
+      .brand-text .school {
+        font-size: 13px;
+        line-height: 1.3;
+      }
+
+      .brand-text .tagline {
+        display: none;
+      }
+
+      .viewer-tag {
+        font-size: 10px;
+        padding: 4px 8px;
+      }
+
+      .logout-btn {
+        font-size: 11px;
+        padding: 6px 10px;
+        margin-left: 6px;
+      }
+
+      .role-toggle button {
+        padding: 7px 12px;
+        font-size: 12px;
+      }
+
+      .nav-btn {
+        font-size: 13px;
+        padding: 10px 10px;
+      }
+
+      .main {
+        padding: 16px 12px;
+      }
+
+      .page-head {
+        align-items: flex-start;
+      }
+
+      .page-head h1 {
+        font-size: 18px;
+      }
+
+      .page-head .sub {
+        font-size: 12.5px;
+      }
+
+      .stats-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+
+      .stat-card {
+        padding: 12px 14px;
+        gap: 10px;
+      }
+
+      .stat-ic {
+        width: 36px;
+        height: 36px;
+        font-size: 16px;
+      }
+
+      .stat-num {
+        font-size: 21px;
+      }
+
+      .cycle-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .login-main {
+        padding: 26px 20px;
+      }
+
+      .role-pick button {
+        font-size: 12px;
+        padding: 9px 4px;
+      }
+
+      .btn {
+        padding: 11px 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ===================== LOGIN SCREEN ===================== -->
+  <div id="login-screen">
+    <div class="login-card">
+      <div class="login-side">
+        <div>
+          <img class="crest" src="https://raw.githubusercontent.com/amanihaled/logo-sekolah/main/logo.png"
+            alt="Logo Sekolah">
+          <h2>SISTEM PENGURUSAN DAN PEMANTAUAN<br>PRASARANA SEKOLAH</h2>
+          <p>SMK Seksyen Sebelas Shah Alam | Sekolah Sukan Selangor<br>Pusingan pemantauan 2026–2030</p>
+        </div>
+        <div class="strip">SELAMAT · SELESA · SEJAHTERA</div>
+      </div>
+      <div class="login-main">
+        <h3>Log Masuk</h3>
+        <div class="sub">Pilih jenis akaun</div>
+        <div class="role-pick">
+          <button id="pick-user" class="active" onclick="pickLoginRole('user')">Pengguna</button>
+          <button id="pick-admin" onclick="pickLoginRole('admin')">Pentadbir</button>
+        </div>
+
+        <div id="login-fields-user">
+          <button class="btn btn-gold" style="width:100%;" onclick="loginAs('user')">Log Masuk sebagai Pengguna</button>
+        </div>
+
+        <div id="login-fields-admin" style="display:none;">
+          <div class="field"><label>Kata Laluan</label><input type="password" id="login-pass-admin"
+              placeholder="Masukkan kata laluan"></div>
+          <button class="btn btn-primary" style="width:100%;" onclick="loginAs('admin')">Log Masuk sebagai
+            Pentadbir</button>
+          <div class="login-err" id="login-error">Kata laluan tidak sah. Sila cuba lagi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== APP ===================== -->
+  <div id="app-container">
+
+    <div id="storage-warning"
+      style="display:none;background:#B33A3A;color:#fff;text-align:center;font-family:'Inter';font-size:13px;font-weight:600;padding:9px 14px;">
+      Fail aduan HANYA disimpan di pelayar ini dan TIDAK akan sampai ke pentadbir!
+    </div>
+
+    <div class="topbar">
+      <div class="brand">
+        <img class="crest" src="https://raw.githubusercontent.com/amanihaled/logo-sekolah/main/logo.png"
+          alt="Logo SMK Seksyen Sebelas">
+        <div class="brand-text">
+          <div class="school">SMK SEKSYEN SEBELAS SHAH ALAM &nbsp;·&nbsp; Sekolah Sukan Selangor</div>
+          <div class="tagline">Sistem Pengurusan dan Pemantauan Prasarana Sekolah &nbsp;|&nbsp; 2026–2030</div>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;flex-wrap:wrap;row-gap:8px;">
+        <span class="viewer-tag" id="signed-in-as">Log masuk sebagai Pengguna</span>
+        <div class="role-toggle" id="role-toggle" style="display:none;margin-left:10px;">
+          <button id="btn-role-user" class="active" onclick="setRole('user')">Pengguna</button>
+          <button id="btn-role-admin" onclick="setRole('admin')">Pentadbir</button>
+        </div>
+        <button class="logout-btn" onclick="logout()">Log Keluar</button>
+      </div>
+    </div>
+
+    <div class="app">
+
+      <!-- ===================== SIDEBAR ===================== -->
+      <div class="sidebar" id="sidebar-user">
+        <div class="side-label">Menu Pengguna</div>
+        <button class="nav-btn active" data-page="u-home" onclick="setPage('user','u-home')"><span
+            class="nav-ic"></span>LAMAN UTAMA</button>
+        <button class="nav-btn" data-page="u-report" onclick="setPage('user','u-report')"><span
+            class="nav-ic"></span>ADUAN KEROSAKAN</button>
+        <button class="nav-btn" data-page="u-check" onclick="setPage('user','u-check')"><span
+            class="nav-ic"></span>SENARAI SEMAK PEMANTAUAN KENDIRI</button>
+        <button class="nav-btn" data-page="u-ref" onclick="setPage('user','u-ref')"><span
+            class="nav-ic"></span>RUJUKAN</button>
+      </div>
+
+      <div class="sidebar" id="sidebar-admin" style="display:none;">
+        <div class="side-label">Menu Pentadbir</div>
+        <button class="nav-btn active" data-page="a-home" onclick="setPage('admin','a-home')"><span
+            class="nav-ic"></span>LAMAN UTAMA</button>
+        <button class="nav-btn" data-page="a-complaints" onclick="setPage('admin','a-complaints')"><span
+            class="nav-ic"></span>URUS ADUAN KEROSAKAN</button>
+        <button class="nav-btn" data-page="a-monitor" onclick="setPage('admin','a-monitor')"><span
+            class="nav-ic"></span>URUS PEMANTAUAN KENDIRI</button>
+        <button class="nav-btn" data-page="a-ref" onclick="setPage('admin','a-ref')"><span
+            class="nav-ic"></span>RUJUKAN</button>
+      </div>
+
+      <!-- ===================== MAIN ===================== -->
+      <div class="main">
+
+        <!-- ============ USER: HOME ============ -->
+        <div class="page active" id="page-u-home">
+          <div class="page-head">
+            <div>
+              <h1>RINGKASAN STATUS ADUAN SEKOLAH</h1>
+            </div>
+            <span class="badge-mode">Mod Pengguna</span>
+          </div>
+          <div class="stats-row" id="user-stats"></div>
+          <div class="panel">
+            <div class="panel-head">SENARAI ADUAN TERKINI</div>
+            <div class="panel-body" style="padding:0;">
+              <table id="u-recent-table">
+                <thead>
+                  <tr>
+                    <th>Nama Pengadu</th>
+                    <th>Lokasi</th>
+                    <th>Jenis Kerosakan</th>
+                    <th>Status</th>
+                    <th>Tarikh</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ USER: REPORT ============ -->
+        <div class="page" id="page-u-report">
+          <div class="page-head">
+            <div>
+              <h1>Aduan Kerosakan</h1>
+              <div class="sub">Guru / AKP / Pengawal Keselamatan / Tukang Kebun / Tukang Cuci boleh melaporkan kerosakan
+                pada bila-bila masa</div>
+            </div>
+            <span class="badge-mode">Mod Pengguna</span>
+          </div>
+          <div class="cols-2">
+            <div class="panel">
+              <div class="panel-head">Borang Aduan Kerosakan</div>
+              <div class="panel-body">
+                <form id="report-form" novalidate autocomplete="off" onsubmit="submitComplaint(event)">
+                  <div class="field-row">
+                    <div class="field"><label>Nama Pengadu *</label><input required id="f-nama"
+                        placeholder="Nama penuh pengadu"></div>
+                    <div class="field"><label>Peranan *</label>
+                      <select required id="f-peranan">
+                        <option value="">Pilih peranan</option>
+                        <option>Guru</option>
+                        <option>AKP</option>
+                        <option>Pengawal Keselamatan</option>
+                        <option>Tukang Kebun</option>
+                        <option>Tukang Cuci</option>
+                        <option>Lain-lain</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="field"><label>Lokasi *</label><input required id="f-lokasi"
+                      placeholder="cth: Blok A, Bilik Prep, Asrama"></div>
+                  <div class="field-row">
+                    <div class="field"><label>Tarikh *</label><input required type="date" id="f-tarikh"></div>
+                    <div class="field"><label>Masa *</label><input required type="time" id="f-masa"></div>
+                  </div>
+                  <div class="field"><label>Jenis Kerosakan *</label>
+                    <select required id="f-jenis">
+                      <option value="">Pilih jenis kerosakan</option>
+                      <option>Elektrik</option>
+                      <option>Paip Air</option>
+                      <option>Perabot</option>
+                      <option>Struktur Bangunan</option>
+                      <option>Peralatan Sukan</option>
+                      <option>ICT / Elektronik</option>
+                      <option>Lain-lain</option>
+                    </select>
+                  </div>
+                  <div class="field"><label>Keterangan Kerosakan *</label><textarea required id="f-keterangan" rows="3"
+                      placeholder="Nyatakan keterangan kerosakan"></textarea></div>
+
+                  <div class="field">
+                    <label>Gambar Kerosakan <span
+                        style="font-weight:400;color:var(--ink-soft);">(pilihan)</span></label>
+                    <input type="file" id="f-gambar" accept="image/*" onchange="pilihGambar(this)">
+                    <div id="gambar-status" style="font-size:12px;color:var(--ink-soft);margin-top:6px;"></div>
+                    <div id="gambar-preview-wrap" style="display:none;margin-top:9px;">
+                      <img id="gambar-preview" alt="Pratonton gambar kerosakan"
+                        style="max-width:100%;max-height:190px;border-radius:8px;border:1px solid var(--line);display:block;">
+                      <button type="button" class="btn btn-ghost"
+                        style="margin-top:8px;padding:6px 12px;font-size:12px;" onclick="buangGambar()">Buang
+                        Gambar</button>
+                    </div>
+                  </div>
+
+                  <button class="btn btn-gold" type="submit" id="btn-hantar">Hantar Aduan</button>
+                </form>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head gold">Panduan Ringkas</div>
+              <div class="panel-body">
+                <ul class="links" style="padding-left:18px;margin:0;">
+                  <li>Isikan semua ruangan bertanda *</li>
+                  <li>Sertakan lokasi yang jelas untuk tindakan pantas</li>
+                  <li>Satu aduan untuk satu kerosakan</li>
+                  <li>Anda boleh semak status aduan di Laman Utama</li>
+                </ul>
+                <div class="note">Aduan yang dihantar akan disemak dan dikemaskini oleh pihak pentadbir sekolah</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ USER: SELF CHECK ============ -->
+        <div class="page" id="page-u-check">
+          <div class="page-head">
+            <div>
+              <h1>Senarai Semak Pemantauan Kendiri</h1>
+              <div class="sub">Penilaian diisi secara berkala 4 kali setahun, boleh diisi secara dalam talian</div>
+            </div>
+            <span class="badge-mode">Mod Pengguna</span>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">Pusingan Pemantauan 2026–2030</div>
+            <div class="panel-body" style="padding:0;overflow-x:auto;" id="u-pusingan-wrap"></div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">Bidang / Fokus Pemantauan</div>
+            <div class="panel-body" style="padding:0;">
+              <table id="u-checklist-table">
+                <thead>
+                  <tr>
+                    <th style="width:36px;">Bil</th>
+                    <th>Bidang / Fokus</th>
+                    <th>Bil. Item</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head gold">Isi Borang Senarai Semak</div>
+            <div class="panel-body">
+              <div class="field-row">
+                <div class="field"><label>Tahun *</label>
+                  <select id="sk-tahun" onchange="muatFormSemakan()"></select>
+                </div>
+                <div class="field"><label>Pusingan *</label>
+                  <select id="sk-pusingan" onchange="muatFormSemakan()">
+                    <option value="1">Pusingan 1 (Jan–Mac)</option>
+                    <option value="2">Pusingan 2 (Apr–Jun)</option>
+                    <option value="3">Pusingan 3 (Jul–Sep)</option>
+                    <option value="4">Pusingan 4 (Okt–Dis)</option>
+                  </select>
+                </div>
+              </div>
+              <div id="sk-status-sedia" class="note" style="display:none;"></div>
+
+              <div class="field-row">
+                <div class="field"><label>Diaudit Oleh (Nama) *</label><input id="sk-nama" placeholder="Nama penuh">
+                </div>
+                <div class="field"><label>Jawatan *</label><input id="sk-jawatan"
+                    placeholder="cth: GPK HEM, Penyelaras 3K"></div>
+              </div>
+
+              <div id="sk-items"></div>
+
+              <div class="field" style="margin-top:6px;">
+                <label>Catatan Tambahan</label>
+                <textarea id="sk-catatan" rows="3" placeholder="Sebarang ulasan tambahan (pilihan)"></textarea>
+              </div>
+
+              <button class="btn btn-gold" id="btn-hantar-semakan" onclick="hantarSemakan()">Hantar Senarai
+                Semak</button>
+              <div id="sk-hantar-status" style="font-size:12.5px;margin-top:8px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ USER: REFERENCE ============ -->
+        <div class="page" id="page-u-ref">
+          <div class="page-head">
+            <div>
+              <h1>Rujukan</h1>
+              <div class="sub">Dokumen dan pautan rasmi berkaitan pengurusan sekolah selamat</div>
+            </div>
+            <span class="badge-mode">Mod Pengguna</span>
+          </div>
+          <div class="panel">
+            <div class="panel-head">Garis Panduan Pengurusan Sekolah Selamat (GPPSS)</div>
+            <div class="panel-body" style="padding:0;">
+              <iframe id="pdf-viewer-user" title="Garis Panduan Pengurusan Sekolah Selamat"
+                      style="width:100%;height:78vh;border:none;display:block;background:#5a5a5a;"></iframe>
+            </div>
+          </div>
+          <div class="note" style="margin:0;">
+            PDF tidak dipaparkan dengan baik di skrin anda?
+            <a href="#" id="pdf-fallback-link-user" target="_blank" rel="noopener">Klik di sini untuk buka dalam tab baharu</a>.
+          </div>
+        </div>
+
+        <!-- ============ ADMIN: HOME ============ -->
+        <div class="page" id="page-a-home">
+          <div class="page-head">
+            <div>
+              <h1>Papan Pemuka Pentadbir</h1>
+              <div class="sub">Ringkasan keseluruhan status aduan &amp; pemantauan kendiri sekolah</div>
+            </div>
+            <span class="badge-mode" style="background:var(--crimson);">Mod Pentadbir</span>
+          </div>
+          <div class="stats-row" id="admin-stats"></div>
+          <div class="cols-2">
+            <div class="panel">
+              <div class="panel-head">Peratus Pencapaian Keseluruhan</div>
+              <div class="panel-body">
+                <div class="progress-ring-wrap">
+                  <div class="ring" id="admin-ring" style="--pct:92;"><span class="ring-num"
+                      id="admin-ring-num">92%</span></div>
+                  <div>
+                    <div style="font-family:'Oswald';font-size:15px;color:var(--navy);font-weight:600;">Peratus
+                      Pencapaian Pemantauan</div>
+                    <div class="sub" style="font-size:12.5px;">Dikira daripada aduan diselesaikan &amp; item pemantauan
+                      yang lengkap diisi</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head gold">Pusingan Semasa</div>
+              <div class="panel-body">
+                <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                  <div class="cycle-card" style="flex:1;min-width:90px;">
+                    <div class="yr">2026</div>
+                    <div class="sub" style="font-size:11px;">4 pusingan</div>
+                  </div>
+                  <div class="cycle-card" style="flex:1;min-width:90px;background:var(--navy);">
+                    <div class="yr" style="color:var(--gold);">Q3</div>
+                    <div class="sub" style="font-size:11px;color:#C9D3DE;">Jul – Sep</div>
+                  </div>
+                </div>
+                <div class="note">Klik "Urus Pemantauan Kendiri" di menu untuk kemaskini jadual penuh 2026–2030.</div>
+              </div>
+            </div>
+          </div>
+          <div class="panel">
+            <div class="panel-head">Senarai Aduan Terkini</div>
+            <div class="panel-body" style="padding:0;">
+              <table id="a-recent-table">
+                <thead>
+                  <tr>
+                    <th>Nama Pengadu</th>
+                    <th>Lokasi</th>
+                    <th>Jenis Kerosakan</th>
+                    <th>Status</th>
+                    <th>Tarikh</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ ADMIN: MANAGE COMPLAINTS ============ -->
+        <div class="page" id="page-a-complaints">
+          <div class="page-head">
+            <div>
+              <h1>Urus Aduan Kerosakan</h1>
+              <div class="sub">Kemaskini status, PIC dan tindakan bagi setiap aduan yang diterima</div>
+            </div>
+            <span class="badge-mode" style="background:var(--crimson);">Mod Pentadbir</span>
+          </div>
+          <div class="stats-row" id="admin-stats-2"></div>
+          <div class="panel">
+            <div class="panel-head">Semua Aduan (<span id="count-all">0</span>)</div>
+            <div class="panel-body" style="padding:0;overflow-x:auto;">
+              <table id="a-full-table">
+                <thead>
+                  <tr>
+                    <th>Nama</th>
+                    <th>Peranan</th>
+                    <th>Lokasi</th>
+                    <th>Jenis</th>
+                    <th>Keterangan</th>
+                    <th>Gambar</th>
+                    <th>Status</th>
+                    <th>PIC / Tindakan</th>
+                    <th>Tarikh</th>
+                    <th>Catatan</th>
+                  </tr>
+                </thead>
+                <tbody></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ ADMIN: MANAGE MONITORING ============ -->
+        <div class="page" id="page-a-monitor">
+          <div class="page-head">
+            <div>
+              <h1>Urus Pemantauan Kendiri</h1>
+              <div class="sub">Semak jumlah item mengikut bidang/fokus dan status pengisian tahunan, dikira terus
+                daripada borang yang dihantar</div>
+            </div>
+            <span class="badge-mode" style="background:var(--crimson);">Mod Pentadbir</span>
+          </div>
+
+          <div class="panel">
+            <div class="panel-head">Pusingan Pemantauan 2026–2030</div>
+            <div class="panel-body" style="padding:0;overflow-x:auto;" id="a-pusingan-wrap"></div>
+            <div class="panel-body" style="padding-top:0;">
+              <div class="note" style="margin:0;">Klik status setiap pusingan untuk tanda Selesai/Belum Selesai secara
+                manual. Pusingan juga ditandakan Selesai secara automatik apabila borang Senarai Semak dihantar.</div>
+            </div>
+          </div>
+
+          <div class="cols-2">
+            <div class="panel">
+              <div class="panel-head">Bidang / Fokus Pemantauan</div>
+              <div class="panel-body" style="padding:0;">
+                <table id="a-checklist-table">
+                  <thead>
+                    <tr>
+                      <th style="width:36px;">Bil</th>
+                      <th>Bidang / Fokus</th>
+                      <th>Bil. Item</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-head gold">Ringkasan Tahunan</div>
+              <div class="panel-body" style="padding:0;">
+                <table id="a-ringkasan-table">
+                  <thead>
+                    <tr>
+                      <th>Tahun</th>
+                      <th>Ada</th>
+                      <th>Tiada</th>
+                      <th>Belum Diisi</th>
+                      <th>% Pencapaian</th>
+                    </tr>
+                  </thead>
+                  <tbody></tbody>
+                </table>
+                <div class="note">Dikira daripada gabungan semua pusingan yang telah dihantar bagi setiap tahun.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- ============ ADMIN: REFERENCE ============ -->
+        <div class="page" id="page-a-ref">
+          <div class="page-head">
+            <div>
+              <h1>Rujukan</h1>
+              <div class="sub">Dokumen rujukan utama dan pautan penting sistem</div>
+            </div>
+            <span class="badge-mode" style="background:var(--crimson);">Mod Pentadbir</span>
+          </div>
+          <div class="panel">
+            <div class="panel-head">Garis Panduan Pengurusan Sekolah Selamat (GPPSS)</div>
+            <div class="panel-body" style="padding:0;">
+              <iframe id="pdf-viewer-admin" title="Garis Panduan Pengurusan Sekolah Selamat"
+                      style="width:100%;height:78vh;border:none;display:block;background:#5a5a5a;"></iframe>
+            </div>
+          </div>
+          <div class="note" style="margin:0;">
+            PDF tidak dipaparkan dengan baik di skrin anda?
+            <a href="#" id="pdf-fallback-link-admin" target="_blank" rel="noopener">Klik di sini untuk buka dalam tab baharu</a>.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-strip">SELAMAT &nbsp;·&nbsp; SELESA &nbsp;·&nbsp; SEJAHTERA</div>
+
+  </div><!-- /app-container -->
+
+  <div id="lightbox" onclick="if(event.target===this) tutupGambar()" style="display:none;position:fixed;inset:0;background:rgba(8,15,25,.88);z-index:9999;
+            align-items:center;justify-content:center;padding:24px;flex-direction:column;gap:14px;">
+    <img id="lightbox-img" alt="Gambar kerosakan"
+      style="max-width:92vw;max-height:78vh;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.5);background:#fff;">
+    <div style="display:flex;gap:10px;">
+      <a id="lightbox-link" href="#" target="_blank" rel="noopener" style="background:var(--gold);color:var(--navy);text-decoration:none;font-family:'Inter';font-weight:600;
+              font-size:13px;padding:9px 16px;border-radius:8px;">Buka dalam Google Drive</a>
+      <button onclick="tutupGambar()" style="background:transparent;border:1px solid rgba(255,255,255,.35);color:#fff;font-family:'Inter';
+                   font-weight:600;font-size:13px;padding:9px 16px;border-radius:8px;cursor:pointer;">Tutup</button>
+    </div>
+  </div>
+
+  <script>
+    /* ===================== DATA ===================== */
+    const CHECKLIST_MASTER = [
+    {id: 1, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Carta Organisasi Jawatankuasa Pengurusan 3K"}, 
+    {id: 2, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Strategi Pelaksanaan Pengurusan Sekolah Selamat" }, 
+    {id: 3, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Peranan dan Tanggungjawab Jawatankuasa Pengurusan 3K" }, 
+    {id: 4, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Program-program berkaitan Pengurusan Sekolah Selamat (antibuli, PEERS, VSP, 3K, jalan raya, siber, DRR, KKP)" }, 
+    {id: 5, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pemantauan dan Penilaian (SPKS, Audit Jemaah Nazir, EMIS, Pemantauan KBK dan PKK)" }, 
+    {id: 6, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Mesyuarat Jawatankuasa Pengurusan 3K diadakan secara berkala (sekurang-kurangnya 3 kali setahun)" }, 
+    {id: 7, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Garis Panduan Pengurusan Sekolah Selamat KPM difailkan" }, 
+    {id: 8, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Polisi Perlindungan Murid KPM difailkan" }, 
+    {id: 9, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Dasar Akta Keselamatan dan Kesihatan Pekerjaan (OSHA) 1994 [Akta 514] difailkan" }, 
+    {id: 10, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Panduan dimaklumkan kepada semua warga sekolah" }, 
+    {id: 11, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Papan tanda keluar pintu kecemasan (Emergency Exit) di setiap pintu keluar" }, 
+    {id: 12, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Lampu kecemasan (emergency light)" }, 
+    {id: 13, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tatacara semasa kebakaran dan bencana" }, 
+    {id: 14, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Notis/Poster keselamatan kebakaran dan bencana" }, 
+    {id: 15, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Mempunyai pintu keluar dari bangunan (sekurang-kurangnya dua pintu)" }, 
+    {id: 16, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Mempunyai tangga kecemasan bagi bangunan bertingkat" }, 
+    {id: 17, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pintu dan tingkap dipasang jenis jeriji besi yang mudah untuk keluar semasa kecemasan" }, 
+    {id: 18, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Terdapat pili bomba (dalam lingkungan 90 meter) berhampiran kawasan bangunan/premis" }, 
+    {id: 19, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Terdapat sistem pengesan haba atau asap" }, 
+    {id: 20, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Terdapat sistem penggera automatik/pecah kaca (loceng)" }, 
+    {id: 21, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Terdapat alat pemadam api (fire extinguisher) di setiap aras bangunan" }, 
+    {id: 22, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Alat pemadam api berada pada jarak 20 meter dari lokasi berisiko dan boleh dicapai dengan mudah" },
+    {id: 23, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Alat pemadam api dipasang mengikut ketinggian yang betul" }, 
+    {id: 24, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Papan tanda tempat berkumpul (assembly point) disediakan" }, 
+    {id: 25, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Nombor telefon perhubungan kecemasan dipaparkan" }, 
+    {id: 26, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Latihan kebakaran dan pengungsian (evacuation) dijalankan (sekurang-kurangnya dua kali setahun)" }, 
+    {id: 27, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Terdapat peti pertolongan cemas dan kandungannya cukup serta tidak luput tarikh" }, 
+    {id: 28, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Terdapat individu yang mempunyai kelayakan membuat CPR (first aider)" }, 
+    {id: 29, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Latihan asas pertolongan cemas/rawatan kecemasan kepada kakitangan/guru" },
+    {id: 30, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Jadual penyelenggaraan elektrik/bangunan/penstoran disediakan" }, 
+    {id: 31, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Diselenggarakan oleh petugas yang berkelayakan" }, 
+    {id: 32, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Semua penyambungan peralatan elektrik dilaksanakan mematuhi aspek keselamatan" }, 
+    {id: 33, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pencahayaan mencukupi (tidak suram)" }, 
+    {id: 34, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Lantai/Jalan (tidak licin, rosak, curam)" }, 
+    {id: 35, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pergerakan tanah (tanah mendap/tanah runtuh)" }, 
+    {id: 36, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Bumbung/Siling (tiada kulat/melentur/reput)" }, 
+    {id: 37, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Susun atur barangan dalam keadaan kemas dan berlabel" }, 
+    {id: 38, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Laluan tidak dihalang" }, 
+    {id: 39, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kawasan berisiko dipagarkan dan diletakkan tanda amaran" }, 
+    {id: 40, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pemasangan CCTV di kawasan berisiko" }, 
+    {id: 41, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Penyelenggaraan pokok besar" }, 
+    {id: 42, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Talang tidak terhalang oleh tumbuhan" }, 
+    {id: 43, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tandas (pengasingan lelaki, perempuan)" }, 
+    {id: 44, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tandas OKU" }, 
+    {id: 45, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Ruang makan/pantri" }, 
+    {id: 46, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Surau" }, 
+    {id: 47, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kemudahan sukan dan sosial" }, 
+    {id: 48, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat mandi/tempat sidaian pakaian" }, 
+    {id: 49, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Bilik Kesihatan/Rawatan/Klinik/Sakit" }, 
+    {id: 50, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Susur landai (OKU)" }, 
+    {id: 51, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Susur tangan (OKU)" }, 
+    {id: 52, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Parkir OKU" }, 
+    {id: 53, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Laluan pejalan kaki berbumbung" }, 
+    {id: 54, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Bersih dan selesa" }, 
+    {id: 55, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Meja dan kerusi selamat digunakan" }, 
+    {id: 56, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Pendawaian elektrik yang selamat dan berfungsi" }, 
+    {id: 57, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Pencahayaan mencukupi" }, 
+    {id: 58, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Pengudaraan mencukupi" }, 
+    {id: 59, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Alat pemadam api disediakan" }, 
+    {id: 60, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Peti pertolongan cemas lengkap dan tidak luput tarikh" },
+    {id: 61, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Pejabat — Laluan kecemasan (tiada sebarang halangan)" }, 
+    {id: 62, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Bersih dan selesa" }, 
+    {id: 63, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Kepadatan ruang bilik (jumlah murid : ruang bilik)" }, 
+    {id: 64, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Meja dan kerusi selamat digunakan" }, 
+    {id: 65, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Pendawaian elektrik yang selamat dan berfungsi" }, 
+    {id: 66, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Keadaan kipas/lampu adalah selamat" }, 
+    {id: 67, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Pencahayaan mencukupi" }, 
+    {id: 68, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Pengudaraan mencukupi" }, 
+    {id: 69, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Alat pemadam api disediakan" }, 
+    {id: 70, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Kelas — Laluan kecemasan (tiada sebarang halangan)" }, 
+    {id: 71, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Persekitaran bersih dan selesa" }, 
+    {id: 72, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Bilik bersih dan selesa" }, 
+    {id: 73, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Bilangan katil dan almari mencukupi" }, 
+    {id: 74, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Katil dan almari dalam keadaan baik dan tersusun" }, 
+    {id: 75, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Kepadatan ruang bilik (jumlah murid : ruang bilik)" }, 
+    {id: 76, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Pendawaian elektrik yang selamat dan berfungsi" }, 
+    {id: 77, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Pencahayaan mencukupi" }, 
+    {id: 78, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Pengudaraan mencukupi" }, 
+    {id: 79, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Alat pemadam api disediakan" }, 
+    {id: 80, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Peti pertolongan cemas (di bilik warden bertugas dan pejabat PTPO)" }, 
+    {id: 81, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Asrama — Laluan kecemasan (tiada sebarang halangan)" }, 
+    {id: 82, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Bersih dan selesa" }, 
+    {id: 83, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Meja dan kerusi dalam keadaan baik dan tersusun" }, 
+    {id: 84, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Pendawaian elektrik yang selamat dan berfungsi" }, 
+    {id: 85, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Pencahayaan mencukupi" }, 
+    {id: 86, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Pengudaraan mencukupi" }, 
+    {id: 87, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Alat pemadam api disediakan" }, 
+    {id: 88, bidang: "Maklumat Keselamatan, Kesihatan dan Persekitaran", perkara: "Tempat Makan (Kantin dan Dewan Makan Asrama) — Laluan kecemasan (tiada sebarang halangan)" }, 
+    {id: 89, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 90, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus keselamatan murid semasa perjalanan pergi dan balik sekolah mengikut panduan" }, 
+    {id: 91, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan murid semasa perjalanan pergi dan balik sekolah" }, 
+    {id: 92, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan keselamatan murid semasa perjalanan pergi dan balik sekolah" }, 
+    {id: 93, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus keselamatan murid semasa di dalam bilik darjah mengikut panduan" }, 
+    {id: 94, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan murid semasa di dalam bilik darjah" }, 
+    {id: 95, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan keselamatan murid semasa di dalam bilik darjah" }, 
+    {id: 96, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus keselamatan murid semasa menjalankan aktiviti sukan dan kokurikulum mengikut panduan" }, 
+    {id: 97, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan murid semasa menjalankan aktiviti sukan dan kokurikulum" }, 
+    {id: 98, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan keselamatan murid semasa menjalankan aktiviti sukan dan kokurikulum" }, 
+    {id: 99, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus keselamatan murid semasa menjalankan aktiviti luar mengikut panduan" }, 
+    {id: 100, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan murid semasa menjalankan aktiviti luar" }, 
+    {id: 101, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan keselamatan murid semasa menjalankan aktiviti luar" }, 
+    {id: 102, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus keselamatan murid di kawasan berisiko mengikut panduan" }, 
+    {id: 103, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan murid di kawasan berisiko" }, 
+    {id: 104, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan keselamatan murid di kawasan berisiko" }, 
+    {id: 105, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus apabila berlaku kemalangan mengikut panduan" }, 
+    {id: 106, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan apabila berlaku kemalangan" }, 
+    {id: 107, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan apabila berlaku kemalangan" }, 
+    {id: 108, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus pertolongan cemas melibatkan murid mengikut panduan" }, 
+    {id: 109, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan apabila berlaku kemalangan melibatkan pertolongan cemas" }, 
+    {id: 110, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan apabila berlaku kemalangan melibatkan pertolongan cemas" }, 
+    {id: 111, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Panduan Pertolongan Cemas disediakan" }, 
+    {id: 112, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Terdapat individu yang mempunyai kelayakan membuat CPR (first aider)" }, 
+    {id: 113, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus menghadapi penyakit berjangkit mengikut panduan" }, 
+    {id: 114, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan menghadapi penyakit berjangkit" }, 
+    {id: 115, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan menghadapi penyakit berjangkit" }, 
+    {id: 116, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus menghadapi situasi keracunan makanan mengikut panduan" }, 
+    {id: 117, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan menghadapi situasi keracunan makanan" }, 
+    {id: 118, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan menghadapi situasi keracunan makanan" }, 
+    {id: 119, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus murid sakit di sekolah mengikut panduan" }, 
+    {id: 120, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Ibu bapa dimaklumkan tentang panduan murid sakit di sekolah" }, 
+    {id: 121, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan murid sakit di sekolah" }, 
+    {id: 122, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru menyediakan tatacara pengurusan kes kematian di sekolah mengikut panduan" }, 
+    {id: 123, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Warga sekolah dimaklumkan berkaitan tatacara pengurusan kes kematian di sekolah" }, 
+    {id: 124, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Pentadbir/guru mengurus keselamatan menerima pelawat mengikut panduan" }, 
+    {id: 125, bidang: "Fokus 1 – Keselamatan Pengurusan Aktiviti Murid", perkara: "Murid dimaklumkan tentang panduan keselamatan menerima pelawat luar" }, 
+    {id: 126, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 127, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan pendawaian dan peralatan elektrik mengikut panduan" }, 
+    {id: 128, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan pendawaian dan peralatan elektrik" }, 
+    {id: 129, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan pendawaian dan peralatan elektrik" }, 
+    {id: 130, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di tandas mengikut panduan" }, 
+    {id: 131, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di tandas" }, 
+    {id: 132, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di tandas" }, 
+    {id: 133, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan bangunan sekolah (susur tangan, tingkap, pintu, siling, lantai, dinding) mengikut panduan" }, 
+    {id: 134, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan bangunan sekolah (susur tangan, tingkap, pintu, siling, lantai, dinding)" }, 
+    {id: 135, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan bangunan sekolah (susur tangan, tingkap, pintu, siling, lantai, dinding)" }, 
+    {id: 136, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan pengurusan kerosakan perabot di dalam bilik darjah mengikut panduan" }, 
+    {id: 137, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan pengurusan kerosakan perabot di dalam bilik darjah" }, 
+    {id: 138, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan pengurusan kerosakan perabot di dalam bilik darjah" }, 
+    {id: 139, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan makmal sains mengikut panduan" }, 
+    {id: 140, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan makmal sains" }, 
+    {id: 141, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan makmal sains" }, 
+    {id: 142, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di bengkel sekolah mengikut panduan" }, 
+    {id: 143, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di bengkel sekolah" }, 
+    {id: 144, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di bengkel sekolah" }, 
+    {id: 145, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di pusat sumber/perpustakaan mengikut panduan" }, 
+    {id: 146, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di pusat sumber/perpustakaan" }, 
+    {id: 147, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di pusat sumber/perpustakaan" }, 
+    {id: 148, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di padang, gelanggang, gimnasium, kolam renang, stor sukan dan studio seni mengikut panduan" }, 
+    {id: 149, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di padang, gelanggang, gimnasium, kolam renang, stor sukan dan studio seni" }, 
+    {id: 150, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di padang, gelanggang, gimnasium, kolam renang, stor sukan dan studio seni" }, 
+    {id: 151, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di stor dan kebun sains pertanian mengikut panduan" }, 
+    {id: 152, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di stor dan kebun sains pertanian" }, 
+    {id: 153, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di stor dan kebun sains pertanian" }, 
+    {id: 154, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan bilik guru mengikut panduan" }, 
+    {id: 155, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan bilik guru" }, 
+    {id: 156, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan bilik guru" }, 
+    {id: 157, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan pengurusan Televisyen Litar Tertutup (CCTV) mengikut panduan" }, 
+    {id: 158, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan pengurusan Televisyen Litar Tertutup (CCTV)" }, 
+    {id: 159, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan pengurusan Televisyen Litar Tertutup (CCTV)" }, 
+    {id: 160, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di bilik dan bangunan khas mengikut panduan" }, 
+    {id: 161, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di bilik dan bangunan khas" }, 
+    {id: 162, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di bilik dan bangunan khas" }, 
+    {id: 163, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan penggunaan lif di sekolah mengikut panduan" }, 
+    {id: 164, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan penggunaan lif di sekolah" }, 
+    {id: 165, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan penggunaan lif di sekolah" }, 
+    {id: 166, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan aliran trafik dan parkir kenderaan dalam kawasan sekolah mengikut panduan" }, 
+    {id: 167, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan aliran trafik dan parkir kenderaan dalam kawasan sekolah" }, 
+    {id: 168, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan aliran trafik dan parkir kenderaan dalam kawasan sekolah" }, 
+    {id: 169, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pentadbir/guru mengurus keselamatan di kantin mengikut panduan" }, 
+    {id: 170, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan di kantin" }, 
+    {id: 171, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Pengusaha kantin dimaklumkan tentang panduan keselamatan di kantin" }, 
+    {id: 172, bidang: "Fokus 2 – Keselamatan Fizikal, Prasarana dan Bilik-Bilik Khas", perkara: "Murid dimaklumkan tentang panduan keselamatan di kantin" }, 
+    {id: 173, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 174, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Pentadbir/guru/warden/PT mengurus keselamatan murid di asrama mengikut panduan" }, 
+    {id: 175, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Ibu bapa/Pengawal Keselamatan dimaklumkan tentang panduan keselamatan murid di asrama" }, 
+    {id: 176, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Murid asrama dimaklumkan tentang panduan keselamatan murid di asrama" }, 
+    {id: 177, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Pentadbir/guru/warden/PT mengurus keselamatan bangunan dan fizikal asrama mengikut panduan" }, 
+    {id: 178, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Ibu bapa/Pengawal Keselamatan dimaklumkan tentang panduan keselamatan bangunan dan fizikal asrama" }, 
+    {id: 179, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Murid asrama dimaklumkan tentang panduan keselamatan bangunan dan fizikal asrama" }, 
+    {id: 180, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Pentadbir/guru/warden/PT mengurus keselamatan penggunaan kemudahan dan bilik khas di asrama mengikut panduan" }, 
+    {id: 181, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Ibu bapa/Pengawal Keselamatan dimaklumkan tentang panduan keselamatan penggunaan kemudahan dan bilik khas di asrama" }, 
+    {id: 182, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Murid asrama dimaklumkan tentang panduan keselamatan penggunaan kemudahan dan bilik khas di asrama" }, 
+    {id: 183, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Pentadbir/guru/warden/PT mengurus keselamatan dewan makan dan dapur asrama mengikut panduan" }, 
+    {id: 184, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Ibu bapa/Pengawal Keselamatan dimaklumkan tentang panduan keselamatan dewan makan dan dapur asrama" }, 
+    {id: 185, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Murid asrama dimaklumkan tentang panduan keselamatan dewan makan dan dapur asrama" }, 
+    {id: 186, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Pentadbir/guru/warden/PT mengurus keselamatan menerima pelawat dan sumbangan luar di asrama mengikut panduan" }, 
+    {id: 187, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Ibu bapa/Pengawal Keselamatan dimaklumkan tentang panduan keselamatan menerima pelawat dan sumbangan luar di asrama" }, 
+    {id: 188, bidang: "Fokus 3 – Pengurusan Keselamatan di Asrama", perkara: "Murid asrama dimaklumkan tentang panduan keselamatan menerima pelawat dan sumbangan luar di asrama" }, 
+    {id: 189, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 190, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami jenis salah laku ringan/sederhana/berat" }, 
+    {id: 191, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami kes khas" }, 
+    {id: 192, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami Tatacara Pengurusan Sahsiah Murid" }, 
+    {id: 193, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami Pelaporan SOP 1:3:7" }, 
+    {id: 194, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami pengurusan kes salah laku disiplin melalui aduan kepada sekolah, aduan SISPAA atau laporan media massa/sosial" }, 
+    {id: 195, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami pengurusan salah laku disiplin murid yang melibatkan pihak berkuasa" }, 
+    {id: 196, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami pengurusan salah laku disiplin murid yang melibatkan kecederaan" }, 
+    {id: 197, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami pengurusan salah laku disiplin murid yang melibatkan kematian" }, 
+    {id: 198, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru memahami pengurusan kes penyalahgunaan dadah atau bahan" }, 
+    {id: 199, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Pentadbir/guru mengurus kes salah laku murid mengikut panduan" }, 
+    {id: 200, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Ibu bapa dimaklumkan berkaitan pengurusan kes salah laku murid" }, 
+    {id: 201, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Komuniti memberi kerjasama berkaitan pengurusan kes salah laku murid" }, 
+    {id: 202, bidang: "Fokus 4 – Pengurusan Salah Laku Disiplin", perkara: "Murid dimaklumkan tentang pengurusan kes salah laku murid" }, 
+    {id: 203, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 204, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Pentadbir/guru mengurus isu gangguan emosi mengikut panduan" }, 
+    {id: 205, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Ibu bapa dimaklumkan tentang panduan gangguan emosi" }, 
+    {id: 206, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Komuniti memberi kerjasama dalam program berkaitan gangguan emosi" }, 
+    {id: 207, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Murid dimaklumkan tentang panduan gangguan emosi" }, 
+    {id: 208, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Pentadbir/guru mengurus isu kecelaruan ideologi mengikut panduan" }, 
+    {id: 209, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Ibu bapa dimaklumkan tentang panduan kecelaruan ideologi" }, 
+    {id: 210, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Komuniti memberi kerjasama dalam program berkaitan kecelaruan ideologi" }, 
+    {id: 211, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Murid dimaklumkan tentang panduan kecelaruan ideologi" }, 
+    {id: 212, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Pentadbir/guru mengurus isu gangguan sosial mengikut panduan" }, 
+    {id: 213, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Ibu bapa dimaklumkan tentang panduan gangguan sosial" }, 
+    {id: 214, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Komuniti memberi kerjasama dalam program berkaitan gangguan sosial" }, 
+    {id: 215, bidang: "Fokus 5 – Kesejahteraan Psikososial", perkara: "Murid dimaklumkan tentang panduan gangguan sosial" }, 
+    {id: 216, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 217, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "Pentadbir/guru mengurus keselamatan digital: etika penggunaan Internet" }, 
+    {id: 218, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "Pentadbir/guru mengurus keselamatan digital: pencegahan jenayah siber" }, 
+    {id: 219, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "Pentadbir/guru mengurus keselamatan digital: perlindungan data" }, 
+    {id: 220, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "Ibu bapa dimaklumkan tentang panduan keselamatan digital" }, 
+    {id: 221, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "Komuniti memberi kerjasama berkaitan program keselamatan digital mengikut panduan" }, 
+    {id: 222, bidang: "Fokus 6 – Keselamatan Siber dan Digital", perkara: "Murid dimaklumkan tentang panduan keselamatan digital" }, 
+    {id: 223, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "SPI/Garis Panduan/Surat Siaran/Surat Makluman berkaitan difailkan" }, 
+    {id: 224, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Pasukan bertindak ditubuhkan dan diberi peranan" }, 
+    {id: 225, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Perancangan dan pelan tindakan pengurusan bencana, kemalangan dan jenayah disediakan mengikut garis panduan" }, 
+    {id: 226, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Perancangan simulasi kecemasan dibuat" }, 
+    {id: 227, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Pentadbir/guru mengambil tindakan berdasarkan panduan sebelum berlaku kecemasan" }, 
+    {id: 228, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Guru dan kakitangan sekolah dimaklumkan panduan kecemasan ketika menghadapi bencana" }, 
+    {id: 229, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Ibu bapa dimaklumkan tentang panduan kecemasan ketika menghadapi bencana" }, 
+    {id: 230, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Murid dimaklumkan tentang panduan kecemasan ketika menghadapi bencana" }, 
+    {id: 231, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Guru dan kakitangan sekolah dimaklumkan panduan kecemasan ketika menghadapi kemalangan" }, 
+    {id: 232, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Ibu bapa dimaklumkan tentang panduan kecemasan ketika menghadapi kemalangan" }, 
+    {id: 233, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Murid dimaklumkan tentang panduan kecemasan ketika menghadapi kemalangan" }, 
+    {id: 234, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Guru dan kakitangan sekolah dimaklumkan panduan kecemasan ketika menghadapi situasi jenayah" }, 
+    {id: 235, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Ibu bapa dimaklumkan tentang panduan kecemasan ketika menghadapi situasi jenayah" }, 
+    {id: 236, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Murid dimaklumkan tentang panduan kecemasan ketika menghadapi situasi jenayah" }, 
+    {id: 237, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Pentadbir/guru mengambil tindakan berdasarkan panduan selepas berlaku kecemasan" }, 
+    {id: 238, bidang: "Fokus 7 – Pelan Tindak Balas Kecemasan", perkara: "Warga sekolah bekerjasama dalam aktiviti pembersihan dan pemulihan kawasan sekolah" }];
+
+    const BIDANG_SENARAI = [...new Set(CHECKLIST_MASTER.map(it => it.bidang))];
+
+    function itemsByBidang(bidang) {
+      return CHECKLIST_MASTER.filter(it => it.bidang === bidang);
+    }
+    function jumlahItemBidang(bidang) {
+      return itemsByBidang(bidang).length;
+    }
+    // CHECKLIST_ITEMS nama kekal so render code sekarang tak perlu diubah — tapi sekarang dikira automatik daripada CHECKLIST_MASTER.
+    const CHECKLIST_ITEMS = BIDANG_SENARAI.map(b => [b, jumlahItemBidang(b)]);
+    const PUSINGAN_LABEL = ["Pusingan 1 (Jan–Mac)", "Pusingan 2 (Apr–Jun)", "Pusingan 3 (Jul–Sep)", "Pusingan 4 (Okt–Dis)"];
+
+    /* PENTING: guna cdn.jsdelivr.net, BUKAN raw.githubusercontent.com.
+       GitHub raw menghantar fail dengan header yang memaksa muat turun
+       (sebab tu ia boleh didownload tapi iframe kekal kosong/kelabu).
+       jsDelivr "mencerminkan" (mirror) repo GitHub yang sama tapi
+       menghantar fail dengan header yang betul untuk paparan terus.
+       Format: https://cdn.jsdelivr.net/gh/NAMA-PENGGUNA/NAMA-REPO@main/NAMA-FAIL.pdf */
+    const PDF_RUJUKAN= "https://cdn.jsdelivr.net/gh/amanihaled/logo-sekolah@main/SPI%20KPM%20BIL.%203%202026%20-%20GARIS%20PANDUAN%20PENGURUSAN%20SEKOLAH%20SELAMAT%20(GPPSS)%20KEMENTERIAN%20PENDIDIKAN.pdf"
+
+    let complaints = [];
+    let cycleState = {}; // { "2026": [true,false,true,false], ... }
+    let semakanData = {}; // { "2026-1": {tahun,pusingan,tarikh,nama,jawatan,jawapan:{id:'ADA'|'TIADA'},catatan}, ... }
+    let currentUserType = null;   // 'user' | 'admin'  (permission level, set at login)
+    let loginRolePicked = 'user'; // which login tab is showing
+
+    // DATABASE GOOGLE SHEET
+    const API_URL = "https://script.google.com/macros/s/AKfycbx9awWh8FO63OvaLTR8q5InuhRtrwS23P2At3K9G1U7r2nIyGVUh9jS3IukVWo69yZssA/exec";
+    // ================================================================
+
+    const HAS_API = /^https:\/\/script\.google\.com\/macros\/s\/.+\/exec/.test(API_URL.trim());
+
+    let sedangSimpan = false;   // elak auto-refresh semasa sedang hantar
+    let autoRefreshId = null;
+
+    async function apiAmbilSemua() {
+      const r = await fetch(API_URL.trim() + '?t=' + Date.now(), { method: 'GET' });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      if (!d.ok) throw new Error(d.error || 'Ralat pelayan');
+      return d;
+    }
+
+    // Apps Script tak jawab OPTIONS request
+    async function apiHantar(muatan) {
+      const r = await fetch(API_URL.trim(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify(muatan)
+      });
+      if (!r.ok) throw new Error('HTTP ' + r.status);
+      const d = await r.json();
+      if (!d.ok) throw new Error(d.error || 'Ralat pelayan');
+      return d;
+    }
+
+    function tunjukAmaran(teks) {
+      const el = document.getElementById('storage-warning');
+      el.innerHTML = teks;
+      el.style.display = 'block';
+    }
+    function sembunyiAmaran() {
+      document.getElementById('storage-warning').style.display = 'none';
+    }
+
+    async function loadData() {
+      if (!HAS_API) {
+        tunjukAmaran('Database di Google Sheet belum disambung. Buka fail HTML ini dengan editor teks, cari <b>const API_URL = ""</b> dan tampal URL Web App Apps Script anda. Sehingga itu, aduan hanya tersimpan pada peranti ini sahaja.');
+        try {
+          complaints = JSON.parse(localStorage.getItem('fallback:complaints-list') || '[]');
+          cycleState = JSON.parse(localStorage.getItem('fallback:cycle-state') || 'null') || seedCycle();
+        } catch (e) { complaints = []; cycleState = seedCycle(); }
+        renderAll();
+        return;
+      }
+
+      try {
+        const d = await apiAmbilSemua();
+        complaints = d.aduan || [];
+        cycleState = d.pusingan && Object.keys(d.pusingan).length ? d.pusingan : seedCycle();
+        semakanData = d.semakan || {};
+        sembunyiAmaran();
+        renderAll();
+        mulakanAutoRefresh();
+      } catch (e) {
+        console.error('Gagal menyambung ke pangkalan data:', e);
+        tunjukAmaran('Tidak dapat menyambung ke database di Google Sheet. Semak sambungan internet anda dan pastikan Web App Apps Script dikongsi kepada <b>"Anyone"</b>. Aduan baharu tidak akan tersimpan buat masa ini.');
+        complaints = [];
+        cycleState = seedCycle();
+        semakanData = {};
+        renderAll();
+      }
+    }
+
+    // Refresh data setiap 20 saat supaya pentadbir nampak aduan baharu tanpa perlu refresh, dan guru nampak status yang dikemas kini
+    function mulakanAutoRefresh() {
+      if (autoRefreshId) return;
+      autoRefreshId = setInterval(async () => {
+        // Jangan refresh kalau user sedang menaip atau sedang menghantar
+        const aktif = document.activeElement;
+        const sedangTaip = aktif && ['INPUT', 'SELECT', 'TEXTAREA'].includes(aktif.tagName);
+        if (sedangTaip || sedangSimpan) return;
+
+        try {
+          const d = await apiAmbilSemua();
+          const belumTersimpan = complaints.filter(c => c._belumTersimpan);
+          complaints = (d.aduan || []).concat(belumTersimpan);
+          if (d.pusingan && Object.keys(d.pusingan).length) cycleState = d.pusingan;
+          if (d.semakan) semakanData = d.semakan;
+          sembunyiAmaran();
+          renderAll();
+        } catch (e) {
+          console.warn('Auto-refresh gagal (akan cuba lagi):', e);
+        }
+      }, 20000);
+    }
+
+    async function saveCycle() {
+      if (!HAS_API) {
+        try { localStorage.setItem('fallback:cycle-state', JSON.stringify(cycleState)); } catch (e) { }
+      }
+    }
+    function seedCycle() {
+      const o = {};
+      [2026, 2027, 2028, 2029, 2030].forEach((y, i) => { o[y] = i === 0 ? [true, true, true, false] : (i < 3 ? [false, false, false, false] : [false, false, false, false]); });
+      return o;
+    }
+
+    /* ===================== LOGIN ===================== */
+    function pickLoginRole(role) {
+      loginRolePicked = role;
+      document.getElementById('pick-user').classList.toggle('active', role === 'user');
+      document.getElementById('pick-admin').classList.toggle('active', role === 'admin');
+      document.getElementById('login-fields-user').style.display = role === 'user' ? 'block' : 'none';
+      document.getElementById('login-fields-admin').style.display = role === 'admin' ? 'block' : 'none';
+      document.getElementById('login-error').classList.remove('show');
+    }
+
+    function loginAs(role) {
+      if (role === 'admin') {
+        const pass = document.getElementById('login-pass-admin').value;
+        if (pass !== 'admin123') {
+          document.getElementById('login-error').classList.add('show');
+          return;
+        }
+      }
+      currentUserType = role; // permission level for this session
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('app-container').style.display = 'block';
+
+      const toggle = document.getElementById('role-toggle');
+      const tag = document.getElementById('signed-in-as');
+      if (role === 'admin') {
+        toggle.style.display = 'flex';           // admin can switch between admin & user views
+        tag.textContent = 'Log masuk sebagai Pentadbir';
+        setRole('admin');
+      } else {
+        toggle.style.display = 'none';            // regular user: no switching, user view only
+        tag.textContent = 'Log masuk sebagai Pengguna';
+        setRole('user');
+      }
+    }
+
+    function logout() {
+      currentUserType = null;
+      document.getElementById('login-pass-admin').value = '';
+      document.getElementById('login-error').classList.remove('show');
+      pickLoginRole('user');
+      document.getElementById('app-container').style.display = 'none';
+      document.getElementById('login-screen').style.display = 'flex';
+    }
+
+    /* ===================== ROLE / PAGE SWITCH ===================== */
+    function setRole(role) {
+      // A logged-in regular user may never switch into the admin view.
+      if (currentUserType === 'user' && role === 'admin') return;
+
+      document.getElementById('btn-role-user').classList.toggle('active', role === 'user');
+      document.getElementById('btn-role-admin').classList.toggle('active', role === 'admin');
+      document.getElementById('sidebar-user').style.display = role === 'user' ? 'flex' : 'none';
+      document.getElementById('sidebar-admin').style.display = role === 'admin' ? 'flex' : 'none';
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      const first = role === 'user' ? 'u-home' : 'a-home';
+      document.getElementById('page-' + first).classList.add('active');
+      document.querySelectorAll('#sidebar-' + role + ' .nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === first));
+    }
+    function setPage(role, page) {
+      document.querySelectorAll('#sidebar-' + role + ' .nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === page));
+      document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+      document.getElementById('page-' + page).classList.add('active');
+    }
+
+    /* ===================== STATS ===================== */
+    function computeStats() {
+      const selesai = complaints.filter(c => c.status === 'Selesai').length;
+      const tindakan = complaints.filter(c => c.status === 'Dalam Tindakan').length;
+      const belum = complaints.filter(c => c.status === 'Belum Selesai').length;
+      const jumlah = complaints.length;
+      return { selesai, tindakan, belum, jumlah };
+    }
+    function statCardsHTML() {
+      const s = computeStats();
+      return `
+    <div class="stat-card"><div class="stat-ic" style="background:var(--green);">✓</div><div><div class="stat-num">${s.selesai}</div><div class="stat-label">Selesai</div></div></div>
+    <div class="stat-card"><div class="stat-ic" style="background:var(--gold-dark);">⏱</div><div><div class="stat-num">${s.tindakan}</div><div class="stat-label">Dalam Tindakan</div></div></div>
+    <div class="stat-card"><div class="stat-ic" style="background:var(--crimson);">✕</div><div><div class="stat-num">${s.belum}</div><div class="stat-label">Belum Selesai</div></div></div>
+    <div class="stat-card"><div class="stat-ic" style="background:var(--navy);">📄</div><div><div class="stat-num">${s.jumlah}</div><div class="stat-label">Jumlah Aduan</div></div></div>
+  `;
+    }
+    function pillHTML(status) {
+      const cls = status === 'Selesai' ? 'selesai' : status === 'Dalam Tindakan' ? 'tindakan' : 'belum';
+      return `<span class="pill ${cls}">${status}</span>`;
+    }
+
+    /* ===================== RENDER ===================== */
+    function renderAll() {
+      document.getElementById('user-stats').innerHTML = statCardsHTML();
+      document.getElementById('admin-stats').innerHTML = statCardsHTML();
+      document.getElementById('admin-stats-2').innerHTML = statCardsHTML();
+
+      renderRecentTable('u-recent-table', 5);
+      renderRecentTable('a-recent-table', 6);
+      renderFullTable();
+      renderChecklistTables();
+      renderReferences();
+      renderPusinganTable('u-pusingan-wrap', false);
+      renderPusinganTable('a-pusingan-wrap', true);
+      renderRingkasanTahunan();
+      if (document.getElementById('sk-tahun').options.length === 0) isiPilihanTahunSemakan();
+      document.getElementById('count-all').textContent = complaints.length;
+
+      const s = computeStats();
+      const pct = s.jumlah ? Math.round((s.selesai / s.jumlah) * 100) : 0;
+      document.getElementById('admin-ring').style.setProperty('--pct', pct);
+      document.getElementById('admin-ring-num').textContent = pct + '%';
+    }
+
+    function renderRecentTable(id, limit) {
+      const tbody = document.querySelector('#' + id + ' tbody');
+      const rows = [...complaints].slice(-limit).reverse();
+      if (!rows.length) { tbody.innerHTML = '<tr><td colspan="5" class="empty">Tiada aduan lagi.</td></tr>'; return; }
+      tbody.innerHTML = rows.map(c => `
+    <tr><td>${c.nama}${c._belumTersimpan ? ' <span title="Belum tersimpan ke pangkalan data">⚠️</span>' : ''}</td><td>${c.lokasi}${c.gambar ? ` <span onclick="lihatGambarUntukId(${c.id})" title="Lihat gambar kerosakan" style="cursor:pointer;">📷</span>` : ''}</td><td>${c.jenis}</td><td>${pillHTML(c.status)}</td><td>${c.tarikh}</td></tr>
+  `).join('');
+    }
+
+    function renderFullTable() {
+      const tbody = document.querySelector('#a-full-table tbody');
+      if (!complaints.length) { tbody.innerHTML = '<tr><td colspan="10" class="empty">Tiada aduan lagi.</td></tr>'; return; }
+      tbody.innerHTML = [...complaints].reverse().map(c => `
+    <tr>
+      <td>${c.nama}</td>
+      <td>${c.peranan || '-'}</td>
+      <td>${c.lokasi}</td>
+      <td>${c.jenis}</td>
+      <td style="max-width:180px;">${c.keterangan || '-'}</td>
+      <td>${c.gambar
+          ? `<img src="${c.gambar}" alt="Gambar kerosakan di ${c.lokasi}" data-cid="${c.id}"
+                onclick="lihatGambarUntukId(${c.id})"
+                style="width:58px;height:44px;object-fit:cover;border-radius:6px;border:1px solid var(--line);cursor:pointer;display:block;"
+                onerror="this.replaceWith(Object.assign(document.createElement('span'),{textContent:'Gambar rosak',style:'font-size:11px;color:var(--ink-soft);'}))">`
+          : '<span style="color:var(--ink-soft);font-size:12px;">—</span>'}</td>
+      <td>
+        <select class="status-edit" onchange="updateStatus(${c.id}, this.value)">
+          <option ${c.status === 'Belum Selesai' ? 'selected' : ''}>Belum Selesai</option>
+          <option ${c.status === 'Dalam Tindakan' ? 'selected' : ''}>Dalam Tindakan</option>
+          <option ${c.status === 'Selesai' ? 'selected' : ''}>Selesai</option>
+        </select>
+      </td>
+      <td><input value="${c.pic || ''}" style="width:100px;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12px;" onchange="updatePic(${c.id}, this.value)"></td>
+      <td style="white-space:nowrap;">${c.tarikh}</td>
+      <td><input value="${c.catatan || ''}" style="width:110px;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12px;" onchange="updateCatatan(${c.id}, this.value)"></td>
+    </tr>
+  `).join('');
+    }
+
+    function renderChecklistTables() {
+      const rowsHTML = CHECKLIST_ITEMS.map((r, i) => `<tr><td>${i + 1}</td><td>${r[0]}</td><td>${r[1]}</td></tr>`).join('')
+        + `<tr style="background:#F0ECE1;font-weight:700;"><td></td><td>JUMLAH KESELURUHAN ITEM</td><td>${CHECKLIST_ITEMS.reduce((a, b) => a + b[1], 0)}</td></tr>`;
+      document.querySelector('#u-checklist-table tbody').innerHTML = rowsHTML;
+      document.querySelector('#a-checklist-table tbody').innerHTML = rowsHTML;
+    }
+
+    function renderReferences() {
+      const url = PDF_RUJUKAN;
+      const urlSahDitetapkan = /^https:\/\/cdn\.jsdelivr\.net\/gh\/.+/.test(url || '');
+      [['pdf-viewer-user','pdf-fallback-link-user'],
+       ['pdf-viewer-admin','pdf-fallback-link-admin']].forEach(([idViewer, idPautan]) => {
+        const viewer = document.getElementById(idViewer);
+        const pautan = document.getElementById(idPautan);
+        if(!viewer) return;
+        if(urlSahDitetapkan){
+          if(!viewer.src) viewer.src = url;
+          if(pautan) pautan.href = url;
+        }else if(!viewer.dataset.gagal){
+          viewer.dataset.gagal = '1';
+          viewer.outerHTML = '<div class="empty">URL PDF rujukan (PDF_RUJUKAN) tidak sah — pastikan ia bermula dengan https://cdn.jsdelivr.net/gh/</div>';
+        }
+      });
+    }
+
+    // Jadual Pusingan Pemantauan — baris 2026–2030, lajur Pusingan 1–4
+    function renderPusinganTable(containerId, editable) {
+      const wrap = document.getElementById(containerId);
+      if (!wrap) return;
+      const years = [2026, 2027, 2028, 2029, 2030];
+      const now = new Date().getFullYear();
+
+      let html = '<table><thead><tr><th>Tahun</th>' +
+        PUSINGAN_LABEL.map(l => `<th>${l}</th>`).join('') + '</tr></thead><tbody>';
+
+      years.forEach(y => {
+        const arr = cycleState[y] || [false, false, false, false];
+        html += `<tr${y === now ? ' style="background:#F0ECE1;"' : ''}><td><b>${y}</b></td>`;
+        arr.forEach((on, qi) => {
+          const hantar = semakanData[y + '-' + (qi + 1)];
+          const label = on ? 'Selesai' : 'Belum Selesai';
+          const cls = on ? 'selesai' : 'belum';
+          const klik = editable ? ` onclick="toggleCycle(${y},${qi})" style="cursor:pointer;"` : '';
+          const titik = hantar ? ` title="Dihantar oleh ${hantar.nama || '-'} pada ${hantar.tarikh || '-'}"` : '';
+          html += `<td${klik}${titik}><span class="pill ${cls}">${label}</span></td>`;
+        });
+        html += '</tr>';
+      });
+      html += '</tbody></table>';
+      wrap.innerHTML = html;
+    }
+    async function toggleCycle(year, idx) {
+      if (!cycleState[year]) cycleState[year] = [false, false, false, false];
+      const nilaiBaru = !cycleState[year][idx];
+      cycleState[year][idx] = nilaiBaru;
+      renderPusinganTable('u-pusingan-wrap', false);
+      renderPusinganTable('a-pusingan-wrap', true);
+
+      if (HAS_API) {
+        sedangSimpan = true;
+        try {
+          await apiHantar({ action: 'pusingan', tahun: Number(year), idx: idx, value: nilaiBaru });
+        } catch (err) {
+          console.error('Gagal menyimpan pusingan:', err);
+          cycleState[year][idx] = !nilaiBaru;  // undo kerana gagal save
+          renderPusinganTable('u-pusingan-wrap', false);
+          renderPusinganTable('a-pusingan-wrap', true);
+          alert('Perubahan pusingan GAGAL disimpan.\n\nSebab: ' + err.message);
+        } finally {
+          sedangSimpan = false;
+        }
+      } else {
+        saveCycle();
+      }
+    }
+
+    /* ===================== RINGKASAN TAHUNAN (dikira daripada Semakan) ===================== */
+    function ringkasanTahun(tahun) {
+      let ada = 0, tiada = 0, belum = 0;
+      const jumlahItem = CHECKLIST_MASTER.length;
+      let pusinganDihantar = 0;
+
+      for (let q = 1; q <= 4; q++) {
+        const rekod = semakanData[tahun + '-' + q];
+        if (!rekod) continue; // pusingan ini belum dihantar langsung — tidak dikira
+        pusinganDihantar++;
+        CHECKLIST_MASTER.forEach(it => {
+          const j = rekod.jawapan ? rekod.jawapan[it.id] : undefined;
+          if (j === 'ADA') ada++;
+          else if (j === 'TIADA') tiada++;
+          else belum++; // item ditinggalkan kosong dalam borang yang dihantar
+        });
+      }
+      const dinilai = ada + tiada;
+      const peratus = dinilai ? Math.round((ada / dinilai) * 100) : 0;
+      return { ada, tiada, belum, peratus, pusinganDihantar, jumlahItem };
+    }
+
+    function renderRingkasanTahunan() {
+      const tbody = document.querySelector('#a-ringkasan-table tbody');
+      if (!tbody) return;
+      const years = [2026, 2027, 2028, 2029, 2030];
+      tbody.innerHTML = years.map(y => {
+        const r = ringkasanTahun(y);
+        if (r.pusinganDihantar === 0) {
+          return `<tr><td>${y}</td><td colspan="4" class="empty" style="text-align:left;padding:9px 10px;">Belum ada borang Senarai Semak dihantar bagi tahun ini.</td></tr>`;
+        }
+        const warna = r.peratus >= 80 ? 'var(--green)' : r.peratus >= 50 ? 'var(--gold-dark)' : 'var(--crimson)';
+        return `<tr><td><b>${y}</b></td><td>${r.ada}</td><td>${r.tiada}</td><td>${r.belum}</td><td><b style="color:${warna};">${r.peratus}%</b></td></tr>`;
+      }).join('');
+    }
+
+    /* ===================== BORANG SENARAI SEMAK PEMANTAUAN KENDIRI ===================== */
+    function isiPilihanTahunSemakan() {
+      const sel = document.getElementById('sk-tahun');
+      if (!sel) return;
+      const now = new Date().getFullYear();
+      sel.innerHTML = TAHUN_PUSINGAN_LIST.map(y => `<option value="${y}" ${y === now ? 'selected' : ''}>${y}</option>`).join('');
+      sel.onchange = muatFormSemakan;
+      muatFormSemakan();
+    }
+    const TAHUN_PUSINGAN_LIST = [2026, 2027, 2028, 2029, 2030];
+
+    /* Display semua 238 item ikut Bidang/Fokus, dengan radio ADA/TIADA.Kalay borang bagi tahun+pusingan yang dipilih sudah pernah dihantar,
+       jawapan sedia ada dimuatkan supaya boleh disemak/disunting semula. */
+    function muatFormSemakan() {
+      const tahun = document.getElementById('sk-tahun').value;
+      const pusingan = document.getElementById('sk-pusingan').value;
+      const rekod = semakanData[tahun + '-' + pusingan];
+      const status = document.getElementById('sk-status-sedia');
+
+      if (rekod) {
+        status.style.display = 'block';
+        status.innerHTML = `Borang bagi Tahun ${tahun}, Pusingan ${pusingan} sudah pernah dihantar oleh <b>${rekod.nama}</b> (${rekod.jawatan || '-'}) pada ${rekod.tarikh}. Anda boleh semak/kemas kini jawapan di bawah — penghantaran semula akan MENGGANTIKAN jawapan lama.`;
+        document.getElementById('sk-nama').value = rekod.nama || '';
+        document.getElementById('sk-jawatan').value = rekod.jawatan || '';
+        document.getElementById('sk-catatan').value = rekod.catatan || '';
+      } else {
+        status.style.display = 'none';
+        status.innerHTML = '';
+        document.getElementById('sk-nama').value = '';
+        document.getElementById('sk-jawatan').value = '';
+        document.getElementById('sk-catatan').value = '';
+      }
+
+      const jawapanSedia = rekod ? rekod.jawapan || {} : {};
+      const wrap = document.getElementById('sk-items');
+      let html = '';
+      BIDANG_SENARAI.forEach(bidang => {
+        html += `<div class="panel" style="margin:14px 0 0;box-shadow:none;"><div class="panel-head" style="font-size:13px;">${bidang}</div><div class="panel-body" style="padding:0;">`;
+        html += '<table><thead><tr><th style="width:34px;">Bil</th><th>Perkara</th><th style="width:90px;text-align:center;">Ada</th><th style="width:90px;text-align:center;">Tiada</th></tr></thead><tbody>';
+        itemsByBidang(bidang).forEach((it, i) => {
+          const jSedia = jawapanSedia[it.id] || '';
+          html += `<tr>
+        <td>${i + 1}</td>
+        <td style="font-size:12.5px;">${it.perkara}</td>
+        <td style="text-align:center;"><input type="radio" name="sk-item-${it.id}" value="ADA" ${jSedia === 'ADA' ? 'checked' : ''}></td>
+        <td style="text-align:center;"><input type="radio" name="sk-item-${it.id}" value="TIADA" ${jSedia === 'TIADA' ? 'checked' : ''}></td>
+      </tr>`;
+        });
+        html += '</tbody></table></div></div>';
+      });
+      wrap.innerHTML = html;
+    }
+
+    async function hantarSemakan() {
+      const tahun = Number(document.getElementById('sk-tahun').value);
+      const pusingan = Number(document.getElementById('sk-pusingan').value);
+      const nama = document.getElementById('sk-nama').value.trim();
+      const jawatan = document.getElementById('sk-jawatan').value.trim();
+      const catatan = document.getElementById('sk-catatan').value.trim();
+      const statusEl = document.getElementById('sk-hantar-status');
+      const butang = document.getElementById('btn-hantar-semakan');
+
+      if (!nama || !jawatan) {
+        statusEl.style.color = 'var(--crimson)';
+        statusEl.textContent = 'Sila lengkapkan nama dan jawatan yang mengaudit senarai semak ini.';
+        return;
+      }
+
+      const jawapan = {};
+      let terisi = 0;
+      CHECKLIST_MASTER.forEach(it => {
+        const dipilih = document.querySelector(`input[name="sk-item-${it.id}"]:checked`);
+        if (dipilih) { jawapan[it.id] = dipilih.value; terisi++; }
+      });
+
+      if (terisi === 0) {
+        statusEl.style.color = 'var(--crimson)';
+        statusEl.textContent = 'Sila tandakan sekurang-kurangnya satu item sebelum menghantar.';
+        return;
+      }
+
+      if (!HAS_API) {
+        statusEl.style.color = 'var(--crimson)';
+        statusEl.textContent = 'Pangkalan data Google Sheet belum disambung — borang tidak dapat dihantar.';
+        return;
+      }
+
+      butang.disabled = true;
+      butang.textContent = 'Menghantar...';
+      statusEl.style.color = 'var(--ink-soft)';
+      statusEl.textContent = '';
+      sedangSimpan = true;
+
+      try {
+        await apiHantar({ action: 'hantarSemakan', tahun, pusingan, nama, jawatan, catatan, jawapan });
+        semakanData[tahun + '-' + pusingan] = { tahun, pusingan, tarikh: new Date().toISOString().slice(0, 10), nama, jawatan, jawapan, catatan };
+        if (!cycleState[tahun]) cycleState[tahun] = [false, false, false, false];
+        cycleState[tahun][pusingan - 1] = true;
+        renderAll();
+        muatFormSemakan();
+        statusEl.style.color = 'var(--green)';
+        statusEl.textContent = `Berjaya dihantar (${terisi}/${CHECKLIST_MASTER.length} item ditandakan).`;
+      } catch (err) {
+        console.error('Gagal menghantar senarai semak:', err);
+        statusEl.style.color = 'var(--crimson)';
+        statusEl.textContent = 'GAGAL dihantar ke pangkalan data. Sebab: ' + err.message;
+      } finally {
+        sedangSimpan = false;
+        butang.disabled = false;
+        butang.textContent = 'Hantar Senarai Semak';
+      }
+    }
+
+    // ===================== GAMBAR KEROSAKAN ===================== 
+    const GAMBAR_MAKS_ASAL_MB = 20;
+    const HAD_AKSARA_GAMBAR = 45000; // beri ruang selamat di bawah had 50,000 Google Sheets
+    const CUBAAN_KECILKAN_GAMBAR = [
+      { dim: 900, kualiti: 0.60 },
+      { dim: 700, kualiti: 0.55 },
+      { dim: 550, kualiti: 0.50 },
+      { dim: 450, kualiti: 0.45 },
+      { dim: 350, kualiti: 0.40 },
+      { dim: 280, kualiti: 0.35 },
+    ];
+
+    let gambarBase64 = null;   // gambar siap dikecilkan, sedia untuk dihantar
+
+    function kecilkanGambar(fail) {
+      return new Promise((resolve, reject) => {
+        const pembaca = new FileReader();
+        pembaca.onerror = () => reject(new Error('Gagal membaca fail gambar.'));
+        pembaca.onload = () => {
+          const img = new Image();
+          img.onerror = () => reject(new Error('Fail ini bukan gambar yang sah.'));
+          img.onload = () => {
+            let cubaanPalingKecil = null;
+            for (const { dim, kualiti } of CUBAAN_KECILKAN_GAMBAR) {
+              let { width: w, height: h } = img;
+              if (w > dim || h > dim) {
+                const nisbah = Math.min(dim / w, dim / h);
+                w = Math.round(w * nisbah);
+                h = Math.round(h * nisbah);
+              }
+              const kanvas = document.createElement('canvas');
+              kanvas.width = w; kanvas.height = h;
+              const ctx = kanvas.getContext('2d');
+              ctx.fillStyle = '#FFFFFF';          // elak latar hitam bagi PNG transparent
+              ctx.fillRect(0, 0, w, h);
+              ctx.drawImage(img, 0, 0, w, h);
+              const dataUrl = kanvas.toDataURL('image/jpeg', kualiti);
+              cubaanPalingKecil = dataUrl; // sentiasa simpan cubaan terkini (makin lama makin kecik)
+              if (dataUrl.length <= HAD_AKSARA_GAMBAR) {
+                resolve(dataUrl);
+                return;
+              }
+            }
+            // Walaupun cubaan paling kecil pun masih melebihi had — guna sahaja
+            // Lebih baik gambar agak kabur berbanding aduan gagal dihantar terus
+            resolve(cubaanPalingKecil);
+          };
+          img.src = pembaca.result;
+        };
+        pembaca.readAsDataURL(fail);
+      });
+    }
+
+    async function pilihGambar(input) {
+      const status = document.getElementById('gambar-status');
+      const fail = input.files && input.files[0];
+      if (!fail) { buangGambar(); return; }
+
+      if (!fail.type.startsWith('image/')) {
+        status.textContent = 'Fail mesti berjenis gambar (JPG, PNG, HEIC).';
+        status.style.color = 'var(--crimson)';
+        input.value = '';
+        return;
+      }
+      if (fail.size > GAMBAR_MAKS_ASAL_MB * 1024 * 1024) {
+        status.textContent = 'Gambar terlalu besar (melebihi ' + GAMBAR_MAKS_ASAL_MB + 'MB).';
+        status.style.color = 'var(--crimson)';
+        input.value = '';
+        return;
+      }
+
+      status.textContent = 'Memproses gambar...';
+      status.style.color = 'var(--ink-soft)';
+
+      try {
+        gambarBase64 = await kecilkanGambar(fail);
+        document.getElementById('gambar-preview').src = gambarBase64;
+        document.getElementById('gambar-preview-wrap').style.display = 'block';
+        const kb = Math.round((gambarBase64.length * 0.75) / 1024);
+        if (gambarBase64.length > HAD_AKSARA_GAMBAR) {
+          status.textContent = 'Amaran: gambar masih agak besar (~' + kb + ' KB) walaupun telah dimampatkan maksimum. Ia mungkin gagal disimpan — cuba gambar lain jika boleh.';
+          status.style.color = 'var(--crimson)';
+        } else {
+          status.textContent = 'Gambar sedia dihantar (dikecilkan kepada ~' + kb + ' KB).';
+          status.style.color = 'var(--green)';
+        }
+      } catch (err) {
+        console.error('Gagal memproses gambar:', err);
+        gambarBase64 = null;
+        status.textContent = err.message || 'Gagal memproses gambar.';
+        status.style.color = 'var(--crimson)';
+        input.value = '';
+      }
+    }
+
+    function buangGambar() {
+      gambarBase64 = null;
+      document.getElementById('f-gambar').value = '';
+      document.getElementById('gambar-preview').src = '';
+      document.getElementById('gambar-preview-wrap').style.display = 'none';
+      document.getElementById('gambar-status').textContent = '';
+    }
+
+    /* Simpan gambar dalam Google Sheet so boleh terus digunakan sebagai src <img> tanpa sebarang penukaran. Fungsi ni kekal supaya kod lama yang memanggilnya tak perlu diubah, tapi sekarang ia hanya pulangkan gambar terus. */
+    function urlThumbnail(pautan) {
+      return String(pautan || '');
+    }
+
+    /* Cari gambar guna id aduan */
+    function lihatGambarUntukId(id) {
+      const c = complaints.find(x => x.id === id);
+      if (!c || !c.gambar) return;
+      document.getElementById('lightbox-img').src = c.gambar;
+      document.getElementById('lightbox-link').href = c.gambar;
+      document.getElementById('lightbox').style.display = 'flex';
+    }
+    function tutupGambar() {
+      document.getElementById('lightbox').style.display = 'none';
+      document.getElementById('lightbox-img').src = '';
+    }
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') tutupGambar(); });
+
+    /* ===================== ACTIONS ===================== */
+    async function submitComplaint(e) {
+      e.preventDefault();
+
+      const butang = document.getElementById('btn-hantar');
+      const nama = document.getElementById('f-nama').value.trim();
+      const peranan = document.getElementById('f-peranan').value;
+      const lokasi = document.getElementById('f-lokasi').value.trim();
+      const tarikh = document.getElementById('f-tarikh').value;
+      const masa = document.getElementById('f-masa').value;
+      const jenis = document.getElementById('f-jenis').value;
+      const keterangan = document.getElementById('f-keterangan').value.trim();
+
+      if (!nama || !peranan || !lokasi || !tarikh || !masa || !jenis || !keterangan) {
+        alert('Sila lengkapkan semua ruangan bertanda * sebelum menghantar aduan.');
+        return;
+      }
+
+      const c = {
+        id: Date.now(),
+        nama, peranan, lokasi, tarikh,
+        masa,
+        jenis, keterangan,
+        status: "Belum Selesai",
+        pic: "-",
+        catatan: "-",
+        gambar: ""
+      };
+
+      // Lock key so aduan sama tak terhantar dua kali
+      butang.disabled = true;
+      butang.textContent = gambarBase64 ? 'Memuat naik gambar...' : 'Menghantar...';
+      sedangSimpan = true;
+
+      try {
+        if (HAS_API) {
+          const muatan = { action: 'tambah', aduan: c };
+          if (gambarBase64) {
+            muatan.aduan = Object.assign({}, c, {
+              gambar: gambarBase64,
+              gambarMime: 'image/jpeg'
+            });
+          }
+          const jawapan = await apiHantar(muatan);
+          c.gambar = jawapan.gambar || '';
+        } else {
+          c._belumTersimpan = true;
+          localStorage.setItem('fallback:complaints-list', JSON.stringify(complaints.concat([c])));
+        }
+
+        complaints.push(c);
+
+        // Borang hanya dikosongkan SELEPAS aduan betul-betul tersimpan so user tak hilang apa yang ditaip kalau gagal hantar
+        document.getElementById('report-form').reset();
+        buangGambar();
+        renderAll();
+        setPage('user', 'u-home');
+
+        if (!HAS_API) {
+          alert('Aduan direkod pada peranti ini SAHAJA kerana pangkalan data belum disambung. Ia TIDAK akan sampai kepada pentadbir.');
+        }
+
+      } catch (err) {
+        console.error('Gagal menghantar aduan:', err);
+        alert('Aduan GAGAL dihantar ke pangkalan data.\n\nSebab: ' + err.message +
+          '\n\nMaklumat yang anda taip masih kekal dalam borang. Semak sambungan internet dan tekan "Hantar Aduan" sekali lagi.');
+      } finally {
+        sedangSimpan = false;
+        butang.disabled = false;
+        butang.textContent = 'Hantar Aduan';
+      }
+    }
+
+    /* Setiap update pentadbir dihantar sebagai perubahan 1 tempat sahaja so 2 pentadbir yang bekerja serentak tak overlap kerja masing masing */
+    async function hantarKemaskini(id, medan, nilai) {
+      if (!HAS_API) {
+        localStorage.setItem('fallback:complaints-list', JSON.stringify(complaints));
+        return;
+      }
+      sedangSimpan = true;
+      try {
+        await apiHantar({ action: 'kemaskini', id: id, field: medan, value: nilai });
+      } catch (err) {
+        console.error('Gagal mengemas kini:', err);
+        alert('Perubahan GAGAL disimpan ke pangkalan data.\n\nSebab: ' + err.message +
+          '\n\nSila muat semula halaman dan cuba lagi.');
+      } finally {
+        sedangSimpan = false;
+      }
+    }
+
+    function updateStatus(id, val) {
+      const c = complaints.find(x => x.id === id);
+      if (c) { c.status = val; renderAll(); hantarKemaskini(id, 'status', val); }
+    }
+    function updatePic(id, val) {
+      const c = complaints.find(x => x.id === id);
+      if (c) { c.pic = val; hantarKemaskini(id, 'pic', val); }
+    }
+    function updateCatatan(id, val) {
+      const c = complaints.find(x => x.id === id);
+      if (c) { c.catatan = val; hantarKemaskini(id, 'catatan', val); }
+    }
+
+    loadData();
+  </script>
+</body>
+
+</html>

@@ -1764,6 +1764,7 @@
         // Jangan refresh kalau user sedang menaip atau sedang menghantar
         const aktif = document.activeElement;
         const sedangTaip = aktif && ['INPUT', 'SELECT', 'TEXTAREA'].includes(aktif.tagName);
+        const diPageSemakan = ['u-check', 'a-check'].includes(halamanAktifId());
         if (sedangTaip || sedangSimpan) return;
 
         try {
@@ -1853,6 +1854,7 @@
       document.querySelectorAll('#sidebar-' + role + ' .nav-btn').forEach(b => b.classList.toggle('active', b.dataset.page === page));
       document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
       document.getElementById('page-' + page).classList.add('active');
+      renderAll();
     }
 
     /* ===================== STATS ===================== */
@@ -1878,27 +1880,48 @@
     }
 
     /* ===================== RENDER ===================== */
-    function renderAll() {
-      document.getElementById('user-stats').innerHTML = statCardsHTML();
-      document.getElementById('admin-stats').innerHTML = statCardsHTML();
-      document.getElementById('admin-stats-2').innerHTML = statCardsHTML();
-
-      renderRecentTable('u-recent-table', 5);
-      renderRecentTable('a-recent-table', 6);
-      renderFullTable();
-      renderChecklistTables();
-      renderReferences();
-      renderPusinganTable('u-pusingan-wrap', false);
-      renderPusinganTable('a-pusingan-wrap', true);
-      renderRingkasanTahunan();
-      if (document.getElementById('sk-tahun').options.length === 0) isiPilihanTahunSemakan();
-      document.getElementById('count-all').textContent = complaints.length;
-
-      const s = computeStats();
-      const pct = s.jumlah ? Math.round((s.selesai / s.jumlah) * 100) : 0;
-      document.getElementById('admin-ring').style.setProperty('--pct', pct);
-      document.getElementById('admin-ring-num').textContent = pct + '%';
+    function halamanAktifId() {
+      const el = document.querySelector('.page.active');
+      return el ? el.id : '';
     }
+    
+    function renderAll() {
+  // selamat kira setiap masa, semua page
+  const statsHtml = statCardsHTML();               // kira SEKALI, bukan 3x
+  document.getElementById('user-stats').innerHTML = statsHtml;
+  document.getElementById('admin-stats').innerHTML = statsHtml;
+  document.getElementById('admin-stats-2').innerHTML = statsHtml;
+  document.getElementById('count-all').textContent = complaints.length;
+
+  const s = computeStats();
+  const pct = s.jumlah ? Math.round((s.selesai / s.jumlah) * 100) : 0;
+  document.getElementById('admin-ring').style.setProperty('--pct', pct);
+  document.getElementById('admin-ring-num').textContent = pct + '%';
+
+  // bina semula bila page tu memang sedang dilihat
+  const aktif = halamanAktifId();
+
+  if (aktif === 'u-home' || aktif === 'a-home') {
+    renderRecentTable('u-recent-table', 5);
+    renderRecentTable('a-recent-table', 6);
+  }
+  if (aktif === 'a-monitor') {
+    renderFullTable();
+  }
+  if (aktif === 'u-check' || aktif === 'a-check') {
+    renderChecklistTables();
+  }
+  if (aktif === 'u-ref' || aktif === 'a-ref') {
+    renderReferences();
+  }
+  if (aktif === 'u-check' || aktif === 'a-monitor') {
+    renderPusinganTable('u-pusingan-wrap', false);
+    renderPusinganTable('a-pusingan-wrap', true);
+    renderRingkasanTahunan();
+  }
+
+  if (document.getElementById('sk-tahun').options.length === 0) isiPilihanTahunSemakan();
+}
 
     function renderRecentTable(id, limit) {
       const tbody = document.querySelector('#' + id + ' tbody');

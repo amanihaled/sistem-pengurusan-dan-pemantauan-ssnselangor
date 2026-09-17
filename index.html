@@ -1882,7 +1882,7 @@
     /* ===================== RENDER ===================== */
     function halamanAktifId() {
       const el = document.querySelector('.page.active');
-      return el ? el.id : '';
+      return el ? el.id.replace(/^page-/, '') : '';
     }
     
     function renderAll() {

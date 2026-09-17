@@ -1764,7 +1764,7 @@
         // Jangan refresh kalau user sedang menaip atau sedang menghantar
         const aktif = document.activeElement;
         const sedangTaip = aktif && ['INPUT', 'SELECT', 'TEXTAREA'].includes(aktif.tagName);
-        const diPageSemakan = ['u-check', 'a-check'].includes(halamanAktifId());
+        const diPageSemakan = halamanAktifId() === 'u-check';
         if (sedangTaip || sedangSimpan) return;
 
         try {
@@ -1905,10 +1905,10 @@
     renderRecentTable('u-recent-table', 5);
     renderRecentTable('a-recent-table', 6);
   }
-  if (aktif === 'a-monitor') {
+  if (aktif === 'a-complaints') {
     renderFullTable();
   }
-  if (aktif === 'u-check' || aktif === 'a-check') {
+  if (aktif === 'u-check' || aktif === 'a-monitor') {
     renderChecklistTables();
   }
   if (aktif === 'u-ref' || aktif === 'a-ref') {
@@ -2364,7 +2364,6 @@
         // Borang hanya dikosongkan SELEPAS aduan betul-betul tersimpan so user tak hilang apa yang ditaip kalau gagal hantar
         document.getElementById('report-form').reset();
         buangGambar();
-        renderAll();
         setPage('user', 'u-home');
 
         if (!HAS_API) {
